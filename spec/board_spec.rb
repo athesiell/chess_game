@@ -14,4 +14,26 @@ describe Board do
       end
     end
   end
+
+  describe '#update_board' do
+    context 'it updates pieces location on the board' do
+      it 'shows new location for the pawn' do
+        location = [2, 3]
+        pawn = Pawn.new(:white)
+        board.update_board(location, pawn)
+        expect(board.board[2][3]).to eq("♟")
+      end
+    end
+  end
+
+  describe '#reset_piece' do 
+    context 'it updates pieces location in the board' do
+      it 'removes pieces when the move was done' do
+        location = [1, 3]
+        board.reset_piece(location)
+        expect(board.board[1][3]).to eq(nil)
+      end
+    end
+  end
+
 end
