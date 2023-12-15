@@ -59,6 +59,24 @@ class Board
     @board[7][3] = Queen.new(:black)
     @board[7][4] = King.new(:black)
   end
+
+  def update_board(location, piece)
+    return 'Location should be array with 2 elements in it' unless location.is_a?(Array) && location.length == 2
+    row = location[0]
+    column = location[1]
+    return 'Invalid move' unless row >= 0 && row <= 7 && column >=0 && column <= 7
+    @board[row][column] = piece.to_s
+    display_board
+  end
+
+  def reset_piece(location)
+    return 'Location should be array with 2 elements in it' unless location.is_a?(Array) && location.length == 2
+    row = location[0]
+    column = location[1]
+    return 'Invalid move' unless row >= 0 && row <= 7 && column >= 0 && column <= 7
+    @board[row][column] = nil
+    display_board
+  end
 end
 
 
