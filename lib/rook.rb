@@ -1,13 +1,16 @@
 require_relative 'pieces'
 
 class Rook < Pieces
-  attr_reader :color
-  
-  def initialize(color)
-    @color = color
-  end
-
   def to_s
     color == :white ? "♜" : "♖"
+  end
+
+  def move_dir
+    [
+      [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0],
+      [-1, 0], [-2, 0], [-3, 0], [-4, 0], [-5, 0], [-6, 0], [-7, 0],
+      [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
+      [0, -1], [0, -2], [0, -3], [0, -4], [0, -5], [0, -6], [0, -7]
+    ]
   end
 end
