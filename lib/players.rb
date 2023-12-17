@@ -2,11 +2,13 @@ require_relative 'board'
 require_relative 'pieces'
 
 class Players
-  attr_reader :player1, :player2, :board, :current_player
+  attr_reader :player1, :player2, :board, :current_player, :color1, :color2
 
   def initialize(player1 = 'Player 1', player2 = 'Player 2')
     @player1 = 'Player 1'
     @player2 = 'Player 2'
+    @color1 = :white
+    @color2 = :black
     @current_player = nil
   end
 
@@ -18,6 +20,10 @@ class Players
     puts 'Player 2 your pieces are black, what is your name?'
     name2 = gets.chomp
     @player2 = name2 unless name2.empty?
+  end
+
+  def player_color
+    @current_player == @player1 ? @color1 : @color2
   end
 
   def update_current_player
