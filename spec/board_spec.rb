@@ -15,25 +15,25 @@ describe Board do
     end
   end
 
-  describe '#update_board' do
+  describe '#move_piece' do
     context 'it updates pieces location on the board' do
+      before do
+        board.place_pieces_white
+        board.place_pieces_black
+      end
       it 'shows new location for the pawn' do
-        location = [2, 3]
-        pawn = Pawn.new([1,3], :white, board)
-        board.update_board(location, pawn)
-        expect(board.board[2][3]).to eq("♟")
+        board.move_piece('a2', 'a4')
+        expect(board.board[3][0].class).to eq(Pawn)
+      end
+
+      it 'shows an error if player makes an invalid move' do
+        expect { board.move_piece('e2', 'b5') }.to output("Invalid move for Pawn piece, please choose again\n").to_stdout
+      end
+
+      it 'removes piece from previos position when the move was done' do
+        board.move_piece('a2', 'a4')
+        expect(board.board[1][0]).to eq(nil)
       end
     end
   end
-
-  describe '#reset_piece' do 
-    context 'it updates pieces location in the board' do
-      it 'removes pieces when the move was done' do
-        location = [1, 3]
-        board.reset_piece(location)
-        expect(board.board[1][3]).to eq(nil)
-      end
-    end
-  end
-
 end
