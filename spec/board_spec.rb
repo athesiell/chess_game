@@ -19,7 +19,7 @@ describe Board do
     context 'it updates pieces location on the board' do
       it 'shows new location for the pawn' do
         location = [2, 3]
-        pawn = Pawn.new([1,3], :white)
+        pawn = Pawn.new([1,3], :white, board)
         board.update_board(location, pawn)
         expect(board.board[2][3]).to eq("♟")
       end
