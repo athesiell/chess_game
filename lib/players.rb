@@ -1,5 +1,5 @@
 require_relative 'board'
-require_relative 'pieces'
+require_relative './pieces/pieces'
 
 class Players
   attr_reader :player1, :player2, :board, :current_player, :color1, :color2
