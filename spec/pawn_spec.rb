@@ -1,4 +1,4 @@
-require './lib/pawn'
+require './lib/pieces/pawn'
 require './lib/board'
 
 describe Pawn do
@@ -20,7 +20,7 @@ describe Pawn do
 
     context 'when the pawn is not at the starting position' do
       it 'shows one available move' do
-        pawn.instance_variable_set(:@position, [3, 3]) 
+        pawn.instance_variable_set(:@position, [3, 3])
         expect(pawn.available_moves.length).to eq(1)
       end
     end
