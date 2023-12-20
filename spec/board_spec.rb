@@ -1,4 +1,5 @@
 require './lib/board'
+require './lib/pieces/pawn'
 
 describe Board do
   subject(:board) { described_class.new }
@@ -27,7 +28,8 @@ describe Board do
       end
 
       it 'shows an error if player makes an invalid move' do
-        expect { board.move_piece('e2', 'b5') }.to output("Invalid move for Pawn piece, please choose again\n").to_stdout
+        pawn = Pawn.new([1,4], :white, board)
+        expect { board.move_piece('e2', 'b5') }.to output("Invalid move for Pawn piece, please choose again. Available moves are #{pawn.available_moves}\n").to_stdout
       end
 
       it 'removes piece from previos position when the move was done' do
