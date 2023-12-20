@@ -1,19 +1,18 @@
-require_relative 'pieces'
-require_relative 'bishop'
-require_relative 'king'
-require_relative 'knight'
-require_relative 'pawn'
-require_relative 'queen'
-require_relative 'rook'
+require_relative './pieces/pieces'
+require_relative './pieces/bishop'
+require_relative './pieces/king'
+require_relative './pieces/knight'
+require_relative './pieces/pawn'
+require_relative './pieces/queen'
+require_relative './pieces/rook'
 
 class Board
   attr_reader :board
-  attr_accessor :player1_pieces, :player2_pieces
 
   def initialize
     @board = Array.new(8) { Array.new(8) }
-    @player1_pieces = place_pieces_white
-    @player2_pieces = place_pieces_black
+    place_pieces_white
+    place_pieces_black
   end
 
   def display_board
@@ -88,18 +87,26 @@ class Board
   end
 
   def move_piece(from, to)
-    from_row, from_col = translate_coordinates(from)
-    to_row, to_col = translate_coordinates(to)
+    from_row, from_col = from
+    from_pos = translate_coordinates(from)
+    
+    to_row, to_col = to
+    to_pos = translate_coordinates(to)
 
-    piece = board[from_row][from_col]
-    if !piece.available_moves.include?([to_row, to_col])
-      puts "Invalid move for #{piece.class} piece, please choose again"
-      return
-    else
-      board[to_row][to_col] = piece
-      board[from_row][from_col] = nil
-      puts "Moved #{piece.class} from #{from} to #{to}"
+    piece = self[from_pos]
+    if !piece.available_moves.include?(to_pos)
+      puts "Invalid move for #{piece.class} piece, please choose again. Available moves are #{piece.available_moves}"
+      return false
     end
+    if !in_boards?(to_pos)
+      puts 'Invalid move, you are going out of the board'
+      return false
+    end
+      self[to_pos] = piece
+      self[from_pos] = nil
+      piece.position = to_pos
+      puts "Moved #{piece.class} from #{from_pos} to #{to_pos}"
+      return true
   end
 end
 
