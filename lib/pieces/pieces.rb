@@ -8,6 +8,18 @@ class Pieces
     @board = board
   end
 
+  def safe_moves
+    moves = []
+    available_moves.each do |move|
+      new_board = board.dup
+      new_board.move_piece!(position, move)
+      if !new_board.in_check?(color)
+        moves << move
+      end
+    end
+    moves
+  end
+
   def enemy?(location)
     !board[location].nil? && board[location].color != color
   end

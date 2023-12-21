@@ -94,7 +94,7 @@ class Board
     to_pos = translate_coordinates(to)
 
     piece = self[from_pos]
-    if !piece.available_moves.include?(to_pos)
+    if !piece.safe_moves.include?(to_pos)
       puts "Invalid move for #{piece.class} piece, please choose again. Available moves are #{piece.available_moves}"
       return false
     end
@@ -102,11 +102,41 @@ class Board
       puts 'Invalid move, you are going out of the board'
       return false
     end
-      self[to_pos] = piece
-      self[from_pos] = nil
-      piece.position = to_pos
-      puts "Moved #{piece.class} from #{from_pos} to #{to_pos}"
       return true
+      move_piece!(from_pos, to_pos)
+  end
+
+  def move_piece!(start_pos, end_pos)
+    self[start_pos], self[end_pos] = nil, self[start_pos]
+    self[end_pos].position = end_pos
+  end
+
+  def all_pieces
+    board.flatten.reject { |piece| piece.nil? }
+  end
+
+  def in_check?(color)
+    king = all_pieces.find { |p| p.color == color && p.is_a?(King) }
+    king_position = king.position
+    all_pieces.select { |p| p.color != color }.each do |piece|
+      return true if piece.available_moves.include?(king_position)
+    end
+    false
+  end
+
+  def checkmate?(color)
+    return false if !in_check?(color)
+    color_pieces = all_pieces.select { |p| p.color == color }
+    color_pieces.all? { |piece| piece.safe_moves.empty? }
+  end
+
+  def dup
+    new_board = Board.new
+    all_pieces.each do |piece|
+      new_piece = piece.class.new(piece.position, piece.color, new_board)
+      new_board[new_piece.position] = new_piece
+    end
+    new_board
   end
 end
 
