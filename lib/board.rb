@@ -102,7 +102,6 @@ class Board
       puts 'Invalid move, you are going out of the board'
       return false
     end
-      return true
       move_piece!(from_pos, to_pos)
   end
 
