@@ -1,9 +1,5 @@
-require_relative './lib/board'
+require_relative './lib/game'
 
-class Game
-  def initialize
-    @board = Board.new
-  end
 
-end
-
+game = Game.new
+game.play
