@@ -125,6 +125,7 @@ class Board
 
   def checkmate?(color)
     return false if !in_check?(color)
+    
     color_pieces = all_pieces.select { |p| p.color == color }
     color_pieces.all? { |piece| piece.safe_moves.empty? }
   end
