@@ -31,3 +31,6 @@ A lot of googling, researching, asking was done so I could tackle the problem an
 I implemented the same method with Players that I did with previous project (Connect Four), so that part wasn't that hard.
 
 Even though this project was the hardest project that I had to face, the main lesson I learned after completing it, is - I felt like every problem could be solved no matter how hard it is if you have enough patience and time.
+
+> [!NOTE]
+> P.S - The white pieces are always below black ones, I made it so the black pieces are white and whites are black, because if you play them in command line black ones look like white and vice versa.
