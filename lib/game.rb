@@ -1,12 +1,6 @@
 require_relative 'board'
 require_relative 'players'
-require_relative './pieces/pieces'
-require_relative './pieces/bishop'
-require_relative './pieces/king'
-require_relative './pieces/knight'
-require_relative './pieces/pawn'
-require_relative './pieces/queen'
-require_relative './pieces/rook'
+require 'json'
 
 class Game
   attr_reader :board, :players, :current_player
@@ -14,6 +8,7 @@ class Game
   def initialize
     @board = Board.new
     @players = Players.new
+    load_game if File.exist?('saved_game.json')
   end
 
   def play
@@ -32,8 +27,13 @@ class Game
       start_pos = nil
 
       loop do
-        puts 'Please select a piece that you want to move'
-        start_pos = gets.chomp.downcase
+        puts 'Please select a piece that you want to move. Or type "M" to show options'
+        answer = gets.chomp.downcase
+        if answer == 'm'
+          input_to_save
+          next
+        end
+        start_pos = answer
         start_pos_coords = board.translate_coordinates(start_pos)
 
         if board[start_pos_coords].nil?
@@ -63,5 +63,57 @@ class Game
 
   def game_over?
     true if board.checkmate?(players.player_color)
+  end
+
+  def to_json
+    JSON.dump({
+      board: Marshal.dump(@board),
+      players: Marshal.dump(@players)
+    })
+  end
+
+  def save_game(file)
+    File.open("saved_game.json", "w") do |game_file|
+      game_file.write(file)
+    end
+  end
+
+  def from_json(json)
+    data = JSON.load File.new(json)
+    @board = Marshal.load(data['board'])
+    @players = Marshal.load(data['players'])
+  end
+
+  def load_game
+    puts "Would you like to load your previous game? Type 'Y' or 'N'!"
+    answer = gets.chomp.downcase
+    if answer == 'y'
+      from_json('saved_game.json')
+    elsif answer == 'n'
+      play
+    else
+      puts 'Invalid input, try again.'
+      load_game
+    end
+  end
+
+  def input_to_save
+    puts "
+    Would you like to save your game?
+    Type 'Y' - save the game / 'N' - to continue playing!
+    Or type 'Q' to end the game!
+    "
+    answer = gets.chomp.downcase
+    if answer == 'y'
+      save_game(to_json)
+    elsif answer == 'n'
+      players.update_current_player
+      game_loop
+    elsif answer == 'q'
+      exit 
+    else
+      puts 'Invalid input. Please enter "Y", "N" or "Q"'
+      input_to_save
+    end
   end
 end
